@@ -6,6 +6,7 @@ public class Player {
     private int jailTurns;
     private int doublesCount;
     private int getOutOfJailCards;
+    private Deck jailCardDeck;
 
     public Player() {
         this.position = 0; //The player begginings in the position 0 = "Go!";
@@ -47,6 +48,14 @@ public class Player {
     public boolean isInJail() {
         return inJail;
     }
+    
+    public Deck getJailCardDeck() {
+        return jailCardDeck;
+    }
+    
+    public void setJailCardDeck(Deck jailCardDeck) {
+        this.jailCardDeck = jailCardDeck;
+    }
 
     // Updating sending the player to the jail.
     public void setInJail(boolean inJail) {
@@ -60,7 +69,7 @@ public class Player {
 
     //Updating the turns the player has been in jail.
     public void setJailTurns(int jailTurns) {
-        this.jailTurns = jailTurns;
+    	this.jailTurns = jailTurns;
     }
 
     //Returns how many times you got double numbers in the dice.
