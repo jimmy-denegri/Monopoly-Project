@@ -12,7 +12,33 @@ public class Square {
     }
 
     public void resolve(Player player, MonopolyGame game) {
-        // TODO: resolve effect of this square
+        switch (type) {
+            case GO:
+            case PROPERTY:
+            case RAILROAD:
+            case UTILITY:
+            case JAIL:
+                // No special action for these in the simulator
+                break;
+
+            case GO_TO_JAIL:
+                player.goToJail();
+                break;
+
+            case CHANCE:
+                Card chanceCard = game.getChanceDeck().draw();
+                if (chanceCard != null) {
+                	chanceCard.apply(player, game, game.getChanceDeck());
+                }
+                break;
+
+            case CHEST:
+                Card chestCard = game.getCcDeck().draw();
+                if (chestCard != null) {
+                	chestCard.apply(player, game, game.getCcDeck());
+                }
+                break;
+        }
     }
 
     public String getName() {
