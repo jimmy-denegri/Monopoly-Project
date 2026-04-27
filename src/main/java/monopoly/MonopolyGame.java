@@ -35,53 +35,63 @@ public class MonopolyGame {
 
     // Simulates ONE turn of the game
     public void playTurn() {
+        boolean turnOver = false;
+        int doublesThisTurn = 0;
 
-        // Step 1: Check if player is currently in jail
+        // If player starts turn in jail, jail strategy decides what happens
         if (player.isInJail()) {
+            turnOver = strategy.handleJailTurn(player, this);
 
-            // Let the strategy decide what to do (try doubles, pay, etc.)
-            strategy.handleJailTurn(player, this);
-
-            // If still in jail after strategy → turn ends immediately
-            if (player.isInJail()) {
-                stats.recordLanding(player.getPosition()); // still on jail square
+            // If jail strategy ended the turn, record landing and stop
+            if (turnOver) {
+                stats.recordLanding(player.getPosition());
                 totalMoves++;
                 return;
             }
         }
 
-        // Step 2: Roll two dice
-        int die1 = rollDie();
-        int die2 = rollDie();
-        int steps = die1 + die2;
+        // Keep rolling while player rolls doubles
+        while (!turnOver) {
+            int die1 = rollDie();
+            int die2 = rollDie();
+            int steps = die1 + die2;
 
-        // Step 3: Handle doubles logic
-        if (die1 == die2) {
-            // Increase consecutive doubles count
-            player.setDoublesCount(player.getDoublesCount() + 1);
-        } else {
-            // Reset if not doubles
-            player.setDoublesCount(0);
+            boolean rolledDoubles = die1 == die2;
+
+            if (rolledDoubles) {
+                doublesThisTurn++;
+            } else {
+                doublesThisTurn = 0;
+                turnOver = true;
+            }
+
+            // Third consecutive doubles sends player to jail immediately
+            if (doublesThisTurn == 3) {
+                player.goToJail();
+                turnOver = true;
+                break;
+            }
+
+            // Move player
+            player.move(steps);
+
+            // Resolve square effect
+            resolveSquare();
+
+            // If square/card sent player to jail, turn ends
+            if (player.isInJail()) {
+                turnOver = true;
+                break;
+            }
+
+            // If player rolled doubles, they get another roll
+            if (!rolledDoubles) {
+                turnOver = true;
+            }
         }
 
-        // If player rolls 3 doubles in a row → go to jail
-        if (player.getDoublesCount() == 3) {
-            player.goToJail();
-            stats.recordLanding(player.getPosition());
-            totalMoves++;
-            return;
-        }
-
-        // Step 4: Move the player forward
-        player.move(steps);
-
-        // Step 5: Resolve the square landed on
-        resolveSquare();
-
-        // Step 6: Record where the player ended up
+        // Record only the final square after all movement effects
         stats.recordLanding(player.getPosition());
-
-        // Step 7: Increment turn counter
         totalMoves++;
     }
 
