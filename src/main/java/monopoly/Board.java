@@ -95,5 +95,6 @@ public class Board {
     // Optional helper method: returns total number of squares
     public int size() {
         return squares.size();
+        // try
     }
 }
