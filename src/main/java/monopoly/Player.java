@@ -6,6 +6,7 @@ public class Player {
     private int jailTurns;
     private int doublesCount;
     private int getOutOfJailCards;
+    private Deck jailCardDeck;
 
     public Player() {
         this.position = 0; //The player begginings in the position 0 = "Go!";
@@ -46,6 +47,14 @@ public class Player {
     //Return if the player is in the jail or not.
     public boolean isInJail() {
         return inJail;
+    }
+    
+    public Deck getJailCardDeck() {
+        return jailCardDeck;
+    }
+
+    public void setJailCardDeck(Deck jailCardDeck) {
+        this.jailCardDeck = jailCardDeck;
     }
 
     // Updating sending the player to the jail.

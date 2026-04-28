@@ -4,7 +4,7 @@ public enum SquareType {
     GO,
     PROPERTY,
     CHANCE,
-    COMMUNITY_CHEST,
+    CHEST,
     JAIL,
     GO_TO_JAIL,
     RAILROAD,
