@@ -1,0 +1,1 @@
+A Monopoly simulation project that analyzes which spaces players land on most often by modeling dice rolls, cards, and jail rules. The program compares different jail strategies to see how they affect landing probabilities over time.
